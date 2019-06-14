@@ -1,0 +1,13 @@
+/out
+/results
+*_m.cc
+*_m.h
+core
+CloneAttackDetectionInSaaS_dbg
+.qtenvrc
+.settings/
+.oppbuildspec
+.project
+.qtenvrc
+.cproject
+..gitignore.swp
