@@ -103,11 +103,11 @@ void pathApp::handleMessageWhenUp(cMessage *msg)
                     /*----PATH----*/
                     if (path.str() == "")
                     {
-                        path << "(" << srcID << ", " << simTime() << ")";
+                        path << "(" << srcID << "), " << simTime() << ")";
                     }
                     else
                     {
-                        path << ", (" << srcID << ", " << simTime() << ")";
+                        path << ", (" << srcID << "), " << simTime() << ")";
                     }
 
 
@@ -168,3 +168,5 @@ void pathApp::handleMessageWhenUp(cMessage *msg)
     else
         throw cRuntimeError("Message arrived on unknown gate %s", msg->getArrivalGate()->getName());
 }
+
+

@@ -22,11 +22,18 @@ namespace inet;
 class MtlsdFile extends FieldsChunk
 {
     Ipv4Address srcAddress; 
-    int Id;
+    int srcId;
     Ipv4Address dstAddress;
-	string position1;
-	string position2;
-	string position3;
+    int claimId;
+	double position1X;
+	double position1Y;
+	double position1Z;
+	double position2X;
+	double position2Y;
+	double position2Z;
+	double position3X;
+	double position3Y;
+	double position3Z;
 	simtime_t time1; 
 	simtime_t time2; 
 	simtime_t time3; 

@@ -75,6 +75,7 @@ class myApp : public ApplicationBase
         InterfaceEntry *interface80211ptr = nullptr;
         int interfaceId = -1;
         list<NEIGHBOR> neighbors;
+        set<int> nb;
         Ipv4Address source;
         int num_nodes;
         int nodeID;

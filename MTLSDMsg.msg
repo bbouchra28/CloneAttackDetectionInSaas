@@ -16,9 +16,6 @@ import inet.common.INETDefs;
 import inet.common.packet.chunk.Chunk;
 import inet.networklayer.contract.ipv4.Ipv4Address;
 
-
-
-
 namespace inet;
 
 class MtlsdMsg extends FieldsChunk
@@ -26,7 +23,9 @@ class MtlsdMsg extends FieldsChunk
     Ipv4Address srcAddress; 
     int Id;
     Ipv4Address dstAddress;
-	string position;
+	double positionX;
+	double positionY;
+	double positionZ;
 	simtime_t time; 
-	//int witness_nodes[];
+	int witness_nodes[];
 }

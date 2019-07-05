@@ -42,6 +42,7 @@ void myApp::initialize(int stage)
         parent = getParentModule();
         grandparent = parent->getParentModule();
         num_nodes = grandparent->par("numHosts");
+        IMobility *mobility = check_and_cast<IMobility *>(parent->getSubmodule("mobility"));
         nodeID = parent->getId();
         moduleType = cModuleType::get("Drone");
         if (parent->getName() != "clone")

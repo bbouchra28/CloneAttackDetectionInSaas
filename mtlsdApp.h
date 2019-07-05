@@ -16,7 +16,7 @@ class mtlsdApp;
 
 typedef struct Mtlsd{
     Ipv4Address originatorAddr, destinationAddr;
-    string position;
+    double positionx, positiony, positionz;
     int originatorId;
     simtime_t time;
 }MTLSD;
@@ -33,7 +33,9 @@ class mtlsdApp : public myApp
     protected:
         list<MTLSD_DATA> mtlsd_file;
         list <MTLSD> mtlsdqueue;
-        double maxSpeed;
+        double speedX, speedY, speedZ;
+        const double epsilon = 0.08;
+        double range;
 
     protected:
         virtual void initialize(int stage) override;
