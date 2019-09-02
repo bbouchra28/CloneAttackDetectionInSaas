@@ -8,6 +8,7 @@
 #ifndef PATHAPP_H_
 #define PATHAPP_H_
 
+#include <functional>
 #include "myApp.h"
 #include "PathMsg_m.h"
 
@@ -15,8 +16,10 @@ class pathApp;
 
 typedef struct PathItem{
     int ID;
-    string path;
+    size_t path;
+    int length;
 }PATH_ITEM;
+
 
 class pathApp : public myApp
 {

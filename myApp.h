@@ -85,11 +85,15 @@ class myApp : public ApplicationBase
         cModule* grandparent;
         cModule* module;
         cModuleType *moduleType;
+        int detected;
+        simtime_t duration;
+
 
     protected:
         virtual int numInitStages() const override { return NUM_INIT_STAGES; }
         virtual void initialize(int stage) override;
         virtual void handleMessageWhenUp(cMessage *msg) override;
+        virtual void finish() override;
 
         void handleSelfMessage(cMessage *msg);
 
@@ -98,7 +102,6 @@ class myApp : public ApplicationBase
         virtual void handleCrashOperation(LifecycleOperation *operation) override  { stop(); }
         void start();
         void stop();
-
         Packet *generateHelloPacket();
         void generateClone();
 

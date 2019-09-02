@@ -18,7 +18,7 @@ Define_Module(mtlsdApp);
 void mtlsdApp::initialize(int stage)
 {
     myApp::initialize(stage);
-    range = 250;
+    range = 90;
 }
 
 void mtlsdApp::handleSelfMessage(cMessage *msg)
@@ -126,6 +126,9 @@ void mtlsdApp::handleMessageWhenUp(cMessage *msg)
                 double waitTime = intuniform(1, 50);
                 waitTime = waitTime/100;
                 waitTime = SIMTIME_DBL(simTime())+waitTime;
+                if (event2 != nullptr) {
+                   cancelAndDelete (event2);
+                }
                 event2 = new cMessage("event2");
                 scheduleAt(waitTime + uniform(0.0, par("maxVariance").doubleValue()), event2);
              }
@@ -462,6 +465,8 @@ void mtlsdApp::handleMessageWhenUp(cMessage *msg)
                             if ((diffx > diffT * Sp) || (diffy > diffT * Sp) || (diffz > diffT * Sp))
                             {
                                 EV_DEBUG << "Clone attack detection : Node " << claimID << " has been cloned " << endl;
+                                detected = 1;
+                                duration = simTime();
                                 endSimulation();
                             }
                         }

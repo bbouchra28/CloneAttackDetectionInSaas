@@ -99,28 +99,34 @@ void pathApp::handleMessageWhenUp(cMessage *msg)
                 }
                 else
                 {
-                    neighbors.push_back(n);
-                    /*----PATH----*/
-                    if (path.str() == "")
+                    if (n.id != (int)parent->par("myID"))
                     {
-                        path << "(" << srcID << "), " << simTime() << ")";
-                    }
-                    else
-                    {
-                        path << ", (" << srcID << "), " << simTime() << ")";
-                    }
+                        neighbors.push_back(n);
+                        /*----PATH----*/
+                        if (path.str() == "")
+                        {
+                            path << "(" << srcID << "), " << simTime() << ")";
+                        }
+                        else
+                        {
+                            path << ", (" << srcID << "), " << simTime() << ")";
+                        }
 
 
-                    EV << "I am your neighbor(IPAddress, ID) = (" << src.str() << ", " << srcID << ")" << endl;
+                        EV << "I am your neighbor(IPAddress, ID) = (" << src.str() << ", " << srcID << ")" << endl;
+                    }
+
                     delete msg;
                 }
                 double waitTime = intuniform(1, 50);
                 waitTime = waitTime/100;
                 waitTime = SIMTIME_DBL(simTime())+waitTime;
+                if (event2 != nullptr) {
+                   cancelAndDelete (event2);
+                }
                 event2 = new cMessage("event2");
                 scheduleAt(waitTime, event2);
              }
-
         }
         else if (strcmp(check_and_cast<Packet *>(msg)->getName(),"PATH") == 0)
         {
@@ -134,10 +140,13 @@ void pathApp::handleMessageWhenUp(cMessage *msg)
             dstAddress = recPath->getDstAddress();
             srcID = recPath->getId();
             recp = recPath->getPath();
+            string rp (recp);
             EV << "I am node " << nodeID << " I received this path " << recp << " from node " << srcID << endl;
             PATH_ITEM item;
+            hash<string> h;
             item.ID = srcID;
-            item.path = recp;
+            item.length = rp.size();
+            item.path = h(rp);
             auto It = find_if(received_path.begin(), received_path.end(), [=] (PATH_ITEM const& i){return (i.ID == srcID);});
             bool found = (It != received_path.end());
             if (!found)
@@ -148,8 +157,17 @@ void pathApp::handleMessageWhenUp(cMessage *msg)
             else
             {
                 PATH_ITEM &x = *It;
-                EV << "I am node " << myID << " I already have a path " << x.path << " for node " << srcID << endl;
-                string p1 = string(x.path);
+                EV << "I am node " << myID << " I already have a path for node " << srcID << endl;
+                string rp_base = rp.substr(0, x.length);
+                if (x.path != h(rp_base))
+                {
+                    EV << "Actual path for node " << srcID << " is not equal to received path" << h(rp_base) << " != " << x.path << endl;
+                    EV << "Clone attack detection : Node " << srcID << " has been cloned " << endl;
+                    detected = 1;
+                    duration = simTime();
+                    endSimulation();
+                }
+                /*string p1 = string(x.path);
                 string p2 = string(item.path);
                 int size = (p1.size() < p2.size()) ? p1.size() : p2.size();
                 if (p1.compare(0, size, p2.substr(0, size)) != 0)
@@ -157,7 +175,7 @@ void pathApp::handleMessageWhenUp(cMessage *msg)
                     EV << "Actual path for node " << srcID << " is not equal to received path" << endl;
                     EV << "Clone attack detection : Node " << srcID << " has been cloned " << endl;
                     endSimulation();
-                }
+                }*/
 
             }
             if (grandparent->getModuleByPath("Drones.clone") == nullptr)
@@ -168,5 +186,3 @@ void pathApp::handleMessageWhenUp(cMessage *msg)
     else
         throw cRuntimeError("Message arrived on unknown gate %s", msg->getArrivalGate()->getName());
 }
-
-

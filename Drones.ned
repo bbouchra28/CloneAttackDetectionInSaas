@@ -24,7 +24,6 @@ network Drones
 {
     parameters:
         int numHosts;
-
     submodules:
         visualizer: IntegratedVisualizer {
             @display("p=100,100");
@@ -36,7 +35,7 @@ network Drones
         host[numHosts]: Drone;
         clone: Clone {
             @dynamic;
-            @display("r=250,red");
+            @display("r=90,red");
             @display("i=misc/node_vs");
         }
 }

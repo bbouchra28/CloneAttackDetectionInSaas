@@ -21,7 +21,7 @@ module Drone extends WirelessHost {
         ipv4.configurator.networkConfiguratorModule = "";
         @display("i=misc/node_vs");
         int myID = default(-1);
-
+        @statistic[detected](record=last; title="clone detection");
     submodules:
         ac_wlan: HostAutoConfigurator {
             @display("p=225,80;is=s");

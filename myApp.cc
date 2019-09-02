@@ -20,7 +20,6 @@ myApp::~myApp()
 {
     cancelAndDelete(event);
     cancelAndDelete(event2);
-    cancelAndDelete(event3);
 }
 
 void myApp::initialize(int stage)
@@ -29,6 +28,10 @@ void myApp::initialize(int stage)
 
     if (stage == INITSTAGE_LOCAL)
     {
+        detected = 0;
+        WATCH(detected);
+        duration = 0;
+        WATCH(duration);
         sequencenumber = 0;
         ift = getModuleFromPar<IInterfaceTable>(par("interfaceTableModule"), this);
         event = new cMessage("event");
@@ -101,8 +104,6 @@ void myApp::stop()
 {
     cancelEvent(event);
     cancelEvent(event2);
-    cancelEvent(event3);
-    delayActiveOperationFinish(par("stopOperationTimeout"));
 }
 
 Packet *myApp::generateHelloPacket()
@@ -143,6 +144,14 @@ void myApp::generateClone()
     module->par("myID") = parent->getId();
     module->setName("clone");
     parent->setName("cloned");
+}
+
+void myApp::finish()
+{
+    recordScalar("duration", duration);
+    recordScalar("detected", detected);
+    recordScalar("number of nodes", num_nodes);
+    ApplicationBase::finish();
 }
 
 
